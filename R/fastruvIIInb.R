@@ -787,7 +787,6 @@ fastruvIII.nb <- function(Y,M,cData=NULL,ctl,k=2,robust=FALSE,ortho.W=FALSE,lamb
                "psi"=psi,'L.a'=lambda.a,'L.b'=lambda.b,batch=batch,corW=cor.check,subsamples=subsamples.org,Wsub=Wsub,Mb.sub=Mb)
   # expand cData
   cData <- data.frame(logLS=log(DelayedMatrixStats::colSums2(Y)),ruvIIInb_batch=out$batch,cbind(cData,W,M))
-  browser()
   sce <-  makeSCE(out, cData=cData, batch = NULL, assays = 'logPAC')
   return(sce)
 }

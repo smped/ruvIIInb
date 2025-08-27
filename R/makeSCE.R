@@ -11,7 +11,6 @@
 
 makeSCE<-function (obj, cData=NULL, batch = NULL, assays = c('pearson','logPAC'))
 {
-  browser()
   batch<-obj$batch
   if(is.null(cData))
     stop("'cData' must be a user-specified data frame.")
