@@ -9,8 +9,9 @@
 
 #' @return A SingleCellExperiment object with normalized data added to the 'assays' slot. The log percentile-adjusted count is stored in the 'logPAC' component of the 'assays' slot and the Pearson residuals is in the 'pearson' component.
 
-makeSCE<-function (obj, cData=NULL, batch = NULL, assays = c('pearson','logPAC'))
+makeSCE<-function (obj, cData=NULL, batch = NULL, assays = c('pearson','logPAC', 'logcounts'))
 {
+  assays <- match.arg(assays)
   batch<-obj$batch
   if(is.null(cData))
     stop("'cData' must be a user-specified data frame.")

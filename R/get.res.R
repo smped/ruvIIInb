@@ -3,7 +3,9 @@
 #' This internal function takes ruvIII.nb or fastruvIII.nb output as input and produce various metrics of normalized data.  Option for metrics of normalized data includes percentile-adjusted count (PAC) and Pearson residuals.
 #'
 #' @param out  output of call to ruvIII.nb or fastruvIII.nb function.
-#' @param type type of normalized data. Supported options are 'quantile' (percentile-adjusted count), 'pearson' (pearson residuals) and logcounts (log normalized count).
+#' @param type type of normalized data. Supported options are
+#' 'quantile' (percentile-adjusted count), 'pearson' (pearson residuals) and
+#' logcounts (log normalized count).
 #' @param batch numeric vector containing batch information for each sample.Must correspond to columns of count matrix. Only needed if batch-specific dispersion parameter is fitted.
 #' @param block.size the maximum number of cells for block processing when returning the corrected expression matrix. Larger block size can be quicker but requires higher RAM. Default = 5000.
 

@@ -26,11 +26,18 @@
 
 #' @return A SingleCellExperiment object containing the raw and adjusted data in the assays slot, cell-level data including the estimated unwanted factors and the M matrix in the colData slot and the gene-level data including the coefficients associated with the unwanted factors in rowData slot.
 #' @export
-fastruvIII.nb <- function(Y,M,cData=NULL,ctl,k=2,robust=FALSE,ortho.W=FALSE,lambda.a=0.01,lambda.b=16,batch=NULL,step.fac=0.5,inner.maxit=50,outer.maxit=25,
-                          ncores=2,use.pseudosample=FALSE,nc.pool=20,batch.disp=FALSE,pCells.touse=0.2,block.size=5000) {
+fastruvIII.nb <- function(
+    Y, M, cData=NULL, ctl, k=2, robust=FALSE, ortho.W=FALSE,
+    lambda.a=0.01, lambda.b=16, batch=NULL, step.fac=0.5,
+    inner.maxit=50, outer.maxit=25, ncores=2, use.pseudosample=FALSE,
+    nc.pool=20, batch.disp=FALSE, pCells.touse=0.2, block.size=5000,
+    assays = c("logcounts", "logPAC", "pearson")
+) {
 
   # register parallel backend
   #register(BPPARAM)
+
+  if (!is.null(assays)) assays <- match.arg(assays)
 
   # setup cluster for doParallel
   doParallel::registerDoParallel(ncores)
@@ -785,9 +792,10 @@ fastruvIII.nb <- function(Y,M,cData=NULL,ctl,k=2,robust=FALSE,ortho.W=FALSE,lamb
 
   out <-  list("counts"=Y,"W"=W, "M"=M, "ctl"=ctl, "logl"=logl.outer, "a"=alpha,"Mb"=Mb.all, "gmean"=gmean,
                "psi"=psi,'L.a'=lambda.a,'L.b'=lambda.b,batch=batch,corW=cor.check,subsamples=subsamples.org,Wsub=Wsub,Mb.sub=Mb)
+  if (is.null(assays)) return(out)
   # expand cData
   cData <- data.frame(logLS=log(DelayedMatrixStats::colSums2(Y)),ruvIIInb_batch=out$batch,cbind(cData,W,M))
-  sce <-  makeSCE(out, cData=cData, batch = NULL, assays = 'logPAC')
+  sce <-  makeSCE(out, cData=cData, batch = NULL, assays = assays)
   return(sce)
 }
 
